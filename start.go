@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+import "github.com/Armienn/MiniatureEngine/mulle"
 
 func main() {
 	fmt.Print("hahaee")
@@ -8,6 +9,7 @@ func main() {
 	fmt.Print(b["moskus"])
 	b["moskus"] = 23
 	fmt.Print(b["moskus"])
+	fmt.Println(mulle.DoThing())
 
 	var ints []int
 	arr := [...]int{1, 2, 3, 4, 5, 6, 7}

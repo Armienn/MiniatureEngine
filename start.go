@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
-import "github.com/Armienn/MiniatureEngine/mulle"
+import (
+	"fmt"
+
+	"github.com/Armienn/MiniatureEngine/machine"
+	"github.com/Armienn/MiniatureEngine/mulle"
+)
 
 func main() {
 	fmt.Print("hahaee")
@@ -60,4 +64,12 @@ func main() {
 	fmt.Print("ints")
 	fmt.Println(ints)
 	fmt.Println()
+
+	program := []machine.Operation{
+		{machine.GEM, 1, 2},
+		{machine.HENT, 7, 8},
+	}
+
+	cpu := new(machine.Cpu)
+	cpu.RunProgram(program)
 }

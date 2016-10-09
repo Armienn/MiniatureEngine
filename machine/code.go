@@ -9,30 +9,31 @@ type Operation struct {
 }
 
 const (
-	NONE     OperationType = iota // NOOPERATION
-	PLUS                          // PLUS     R1 123
-	PLUSR                         // PLUS     R1 R2
-	MINUS                         // MINUS    R1 123
-	MINUSR                        // MINUS    R1 R2
-	SÆT                           // SÆT      R1 123
-	SÆTR                          // SÆT      R1 R2
-	SÆNK                          // SÆNK     R1
-	ØG                            // ØG       R1
-	SPRING                        // SPRING   tag
-	HVIS                          // HVIS     R1
-	HVISIKKE                      // HVISIKKE R1
-	HVISENS                       // HVISENS  R1 123
-	HVISENSR                      // HVISENS  R1 R2
-	VIS                           // VIS      123
-	VISR                          // VIS      R1
-	VISTEGN                       // VISTEGN  123
-	VISTEGNR                      // VISTEGN  R1
-	FÅTEGN                        // FÅTEGN   R1
-	GEM                           // GEM      123
-	GEMR                          // GEM      R1
-	HENT                          // HENT     R1
-	SKUB                          // SKUB		 R1
-	TRÆK                          // TRÆK 		 R1
-	OMVEJ                         // OMVEJ    tag
-	RETUR                         // RETUR
+	NONE  OperationType = iota // NOOPERATION
+	ADD                        // PLUS     R1 123
+	ADDR                       // PLUS     R1 R2
+	SUB                        // MINUS    R1 123
+	SUBR                       // MINUS    R1 R2
+	SET                        // SÆT      R1 123
+	SETR                       // SÆT      R1 R2
+	DEC                        // SÆNK     R1
+	INC                        // ØG       R1
+	JMP                        // SPRING   tag
+	IF                         // HVIS     R1
+	IFN                        // HVISIKKE R1
+	IFEQ                       // HVISENS  R1 123
+	IFEQR                      // HVISENS  R1 R2
+	IFOV                       // HVISOVER
+	SHOW                       // VIS      123
+	SHOWR                      // VIS      R1
+	RUNE                       // VISTEGN  123
+	RUNER                      // VISTEGN  R1
+	GRUNE                      // FÅTEGN   R1
+	STR                        // GEM      123
+	STRR                       // GEM      R1
+	GET                        // HENT     R1
+	PUSH                       // SKUB		 R1
+	POP                        // TRÆK 		 R1
+	CALL                       // OMVEJ    tag
+	RET                        // RETUR
 )

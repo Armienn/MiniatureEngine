@@ -88,7 +88,7 @@ func (cpu *CPU) performOperation(operation Operation, reader *bufio.Reader) {
 			cpu.ProgramCounter++
 		}
 	case IFOV:
-		if !(cpu.Registers[15] > 0) {
+		if !cpu.getOverflow() {
 			cpu.ProgramCounter++
 		}
 

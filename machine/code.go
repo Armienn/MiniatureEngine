@@ -1,6 +1,6 @@
 package machine
 
-type OperationType int
+type OperationType byte
 
 type Operation struct {
 	Type          OperationType

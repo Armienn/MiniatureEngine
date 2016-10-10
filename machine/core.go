@@ -11,7 +11,7 @@ import (
 type CPU struct {
 	Registers      [16]byte
 	Memory         [65536]byte
-	ProgramCounter int
+	ProgramCounter uint16
 }
 
 //r12: low addr
@@ -23,7 +23,7 @@ type CPU struct {
 func (cpu *CPU) RunProgram(program []Operation) {
 	cpu.ProgramCounter = 0
 	reader := bufio.NewReader(os.Stdin)
-	for cpu.ProgramCounter = 0; cpu.ProgramCounter < len(program); cpu.ProgramCounter++ {
+	for cpu.ProgramCounter = 0; int(cpu.ProgramCounter) < len(program); cpu.ProgramCounter++ {
 		operation := program[cpu.ProgramCounter]
 		cpu.performOperation(operation, reader)
 		//cpu.printState(operation)
@@ -69,7 +69,7 @@ func (cpu *CPU) performOperation(operation Operation, reader *bufio.Reader) {
 		cpu.setOverflow(cpu.Registers[operation.FirstOperand] == 0)
 
 	case JMP:
-		cpu.ProgramCounter = int(operation.FirstOperand)*256 + int(operation.SecondOperand) - 1
+		cpu.ProgramCounter = uint16(operation.FirstOperand)*256 + uint16(operation.SecondOperand) - 1
 
 	case IF:
 		if !(cpu.Registers[operation.FirstOperand] > 0) {
@@ -133,13 +133,13 @@ func (cpu *CPU) performOperation(operation Operation, reader *bufio.Reader) {
 		temp = 65535 - int(cpu.Registers[14])
 		cpu.Memory[temp] = byte(cpu.ProgramCounter / 256)
 		cpu.Registers[14]++
-		cpu.ProgramCounter = int(operation.FirstOperand)*256 + int(operation.SecondOperand) - 1
+		cpu.ProgramCounter = uint16(operation.FirstOperand)*256 + uint16(operation.SecondOperand) - 1
 	case RET:
 		temp = 65535 - int(cpu.Registers[14])
-		cpu.ProgramCounter = int(cpu.Memory[temp]) * 256
+		cpu.ProgramCounter = uint16(cpu.Memory[temp]) * 256
 		cpu.Registers[14]--
 		temp = 65535 - int(cpu.Registers[14])
-		cpu.ProgramCounter += int(cpu.Memory[temp])
+		cpu.ProgramCounter += uint16(cpu.Memory[temp])
 		cpu.Registers[14]--
 	}
 }

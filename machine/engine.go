@@ -22,3 +22,7 @@ func (engine *MiniatureEngine) LoadProgram(fileName string) error {
 	}
 	return nil
 }
+
+func (engine *MiniatureEngine) Run() {
+	engine.Cpu.RunProgram(engine.Program[:])
+}

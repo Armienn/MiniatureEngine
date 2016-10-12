@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 
+	"github.com/Armienn/MiniatureEngine/compiler"
 	"github.com/Armienn/MiniatureEngine/machine"
 )
 
 func main() {
+	compiler.Compile(".gitignore")
 	engine := new(machine.MiniatureEngine)
 	//engine.LoadProgram(".gitignore")
 

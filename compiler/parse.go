@@ -9,143 +9,149 @@ import (
 	"github.com/Armienn/MiniatureEngine/machine"
 )
 
-type line struct {
-	commandType byte
-	command     machine.OperationType
-	op1         string
-	op2         string
+//Line represents a line of assembler code
+type Line struct {
+	CommandType byte
+	Command     machine.OperationType
+	Op1         string
+	Op2         string
 }
 
 const (
-	noCommand = iota
-	alias
-	lineTag
-	command
+	//NoCommand is the type of a line which has no meaning
+	NoCommand = iota
+	//Alias is a line which defines a string alias for some value
+	Alias
+	//LineTag is a line which defines a string which is an alias for the current program line
+	LineTag
+	//Command is a line which represents an actual program command
+	Command
 )
 
-func readAndParse(file *os.File) []line {
-	lines := make([]line, 0, 256)
+//ReadAndParse reads the content of a file and constructs a list of lines with meaningful commands
+func ReadAndParse(file *os.File) []Line {
+	lines := make([]Line, 0, 256)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := parseLine(scanner.Text())
-		if line.commandType != noCommand {
+		if line.CommandType != NoCommand {
 			lines = append(lines, line)
 		}
 	}
 	return lines
 }
 
-func parseLine(input string) (parsedLine line) {
+func parseLine(input string) (line Line) {
 	fields := strings.Fields(input)
 	if len(fields) == 0 {
-		parsedLine.commandType = noCommand
+		line.CommandType = NoCommand
 		return
 	}
-	parsedLine = parseFields(fields)
+	line = parseFields(fields)
 	return
 }
 
-func parseFields(fields []string) (parsedLine line) {
+func parseFields(fields []string) (line Line) {
 	defer func() {
 		if r := recover(); r != nil {
-			parsedLine.commandType = noCommand
+			line.CommandType = NoCommand
 			return
 		}
-		if parsedLine.commandType == noCommand {
+		if line.CommandType == NoCommand {
 			fmt.Printf("Couldn't parse %v \n", fields)
 		}
 	}()
 
-	parsedLine.commandType = parseLineType(fields[0])
-	if parsedLine.commandType == command {
-		parseCommand(&parsedLine, fields[1])
+	line.CommandType = parseLineType(fields[0])
+	if line.CommandType == Command {
+		parseCommand(&line, fields[1])
 	}
-	parseOperators(&parsedLine, fields)
+	parseOperators(&line, fields)
 	return
 }
 
 func parseLineType(field string) byte {
 	switch field {
 	case "$":
-		return alias
+		return Alias
 	case ":":
-		return lineTag
+		return LineTag
 	default:
-		return command
+		return Command
 	}
 }
 
-func parseOperators(parsedLine *line, fields []string) {
+func parseOperators(line *Line, fields []string) {
 	nextField := 1
-	if parsedLine.commandType == command {
+	if line.CommandType == Command {
 		nextField = 2
 	}
 	if len(fields) > nextField {
-		parsedLine.op1 = fields[nextField]
+		line.Op1 = fields[nextField]
 		nextField++
 		if len(fields) > nextField {
-			parsedLine.op2 = fields[nextField]
+			line.Op2 = fields[nextField]
 		}
 	}
 }
 
-func parseCommand(parsedLine *line, command string) {
+func parseCommand(line *Line, command string) {
 	switch command {
 	case "NONE":
-		parsedLine.command = machine.NONE
+		line.Command = machine.NONE
 	case "PLUS", "ADD":
-		parsedLine.command = machine.ADD
+		line.Command = machine.ADD
 	case "PLUSR", "ADDR":
-		parsedLine.command = machine.ADDR
+		line.Command = machine.ADDR
 	case "MINUS", "SUB":
-		parsedLine.command = machine.SUB
+		line.Command = machine.SUB
 	case "MINUSR", "SUBR":
-		parsedLine.command = machine.SUBR
+		line.Command = machine.SUBR
 	case "SÆT", "SET":
-		parsedLine.command = machine.SET
+		line.Command = machine.SET
 	case "SÆTR", "SETR":
-		parsedLine.command = machine.SETR
+		line.Command = machine.SETR
 	case "SÆNK", "DEC":
-		parsedLine.command = machine.DEC
+		line.Command = machine.DEC
 	case "ØG", "INC":
-		parsedLine.command = machine.INC
+		line.Command = machine.INC
 	case "SPRING", "JMP":
-		parsedLine.command = machine.JMP
+		line.Command = machine.JMP
 	case "HVIS", "IF":
-		parsedLine.command = machine.IF
+		line.Command = machine.IF
 	case "HVISIKKE", "IFN":
-		parsedLine.command = machine.IFN
+		line.Command = machine.IFN
 	case "HVISENS", "IFEQ":
-		parsedLine.command = machine.IFEQ
+		line.Command = machine.IFEQ
 	case "HVISENSR", "IFEQR":
-		parsedLine.command = machine.IFEQR
+		line.Command = machine.IFEQR
 	case "HVISOVER", "IFOV":
-		parsedLine.command = machine.IFOV
+		line.Command = machine.IFOV
 	case "VIS", "SHOW":
-		parsedLine.command = machine.SHOW
+		line.Command = machine.SHOW
 	case "VISR", "SHOWR":
-		parsedLine.command = machine.SHOWR
+		line.Command = machine.SHOWR
 	case "VISTEGN", "RUNE":
-		parsedLine.command = machine.RUNE
+		line.Command = machine.RUNE
 	case "VISTEGNR", "RUNER":
-		parsedLine.command = machine.RUNER
+		line.Command = machine.RUNER
 	case "FÅTEGN", "GRUNE":
-		parsedLine.command = machine.GRUNE
+		line.Command = machine.GRUNE
 	case "GEM", "STR":
-		parsedLine.command = machine.STR
+		line.Command = machine.STR
 	case "GEMR", "STRR":
-		parsedLine.command = machine.STRR
+		line.Command = machine.STRR
 	case "HENT", "GET":
-		parsedLine.command = machine.GET
+		line.Command = machine.GET
 	case "SKUB", "PUSH":
-		parsedLine.command = machine.PUSH
+		line.Command = machine.PUSH
 	case "TRÆK", "POP":
-		parsedLine.command = machine.POP
+		line.Command = machine.POP
 	case "OMVEJ", "CALL":
-		parsedLine.command = machine.CALL
+		line.Command = machine.CALL
 	case "RETUR", "RET":
-		parsedLine.command = machine.RET
+		line.Command = machine.RET
 	default:
-		parsedLine.commandType = noCommand
+		line.CommandType = NoCommand
 	}
 }

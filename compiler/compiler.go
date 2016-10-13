@@ -23,6 +23,6 @@ func writeProgram([]machine.Operation) error {
 	return nil
 }
 
-func constructProgram(lines []line) []machine.Operation {
+func constructProgram(lines []Line) []machine.Operation {
 	return nil
 }

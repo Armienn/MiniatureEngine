@@ -26,7 +26,6 @@ func (cpu *CPU) RunProgram(program []Operation) {
 	for cpu.ProgramCounter = 0; int(cpu.ProgramCounter) < len(program); cpu.ProgramCounter++ {
 		operation := program[cpu.ProgramCounter]
 		cpu.performOperation(operation, reader)
-		//cpu.printState(operation)
 	}
 }
 
@@ -103,9 +102,6 @@ func (cpu *CPU) performOperation(operation Operation, reader *bufio.Reader) {
 		fmt.Print(string(cpu.Registers[operation.FirstOperand]))
 	case GRUNE:
 		cpu.Registers[operation.FirstOperand], _ = reader.ReadByte() //this blocks until enter has been pressed
-		//var err error
-		//cpu.Registers[operation.FirstOperand], err = reader.ReadByte()
-		//cpu.setOverflow(err != nil)
 
 	case STR:
 		temp = int(cpu.Registers[13])*256 + int(cpu.Registers[12])
@@ -158,4 +154,5 @@ func (cpu *CPU) getOverflow() bool {
 
 func (cpu *CPU) printState(operation Operation) {
 	fmt.Printf("%d OP: %v \n", cpu.ProgramCounter, operation)
+	//Add more state
 }

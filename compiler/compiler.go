@@ -7,6 +7,7 @@ import (
 	"github.com/Armienn/MiniatureEngine/machine"
 )
 
+//Compile compiles the code found in the given input files and writes the result to the output file
 func Compile(inputFile string, outputFile string) error {
 	lines, err := ReadAndParseFile(inputFile)
 	if err != nil {
@@ -22,6 +23,7 @@ func Compile(inputFile string, outputFile string) error {
 	return err
 }
 
+//ReadAndParseFile reads the content of the input file and parses it into a list of Line
 func ReadAndParseFile(inputFile string) ([]Line, error) {
 	file, err := os.Open(inputFile)
 	if err != nil {
@@ -31,6 +33,7 @@ func ReadAndParseFile(inputFile string) ([]Line, error) {
 	return ReadAndParse(file), err
 }
 
+//WriteProgramFile writes a binary program into the output file based on the given operations
 func WriteProgramFile(operations []machine.Operation, outputFile string) error {
 	file, err := os.Create(outputFile)
 	if err != nil {
@@ -40,11 +43,8 @@ func WriteProgramFile(operations []machine.Operation, outputFile string) error {
 	return WriteProgram(operations, file)
 }
 
+//WriteProgram writes a binary program into the output file based on the given operations
 func WriteProgram(operations []machine.Operation, file *os.File) error {
-	//writer := bufio.NewWriter(file)
-	//err := binary.Write(file, binary.LittleEndian, operations)
-	//	buffer = new(bytes.Buffer)
-	//err := binary.Write(buffer, binary.LittleEndian, operations)
 	for _, v := range operations {
 		err := binary.Write(file, binary.LittleEndian, v)
 		if err != nil {

@@ -1,7 +1,6 @@
 package compiler
 
 import (
-	"bufio"
 	"encoding/binary"
 	"os"
 
@@ -42,7 +41,15 @@ func WriteProgramFile(operations []machine.Operation, outputFile string) error {
 }
 
 func WriteProgram(operations []machine.Operation, file *os.File) error {
-	writer := bufio.NewWriter(file)
-	err := binary.Write(writer, binary.LittleEndian, operations)
-	return err
+	//writer := bufio.NewWriter(file)
+	//err := binary.Write(file, binary.LittleEndian, operations)
+	//	buffer = new(bytes.Buffer)
+	//err := binary.Write(buffer, binary.LittleEndian, operations)
+	for _, v := range operations {
+		err := binary.Write(file, binary.LittleEndian, v)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	compiler.Compile("bub.txt", "mulle.txt")
+	err := compiler.Compile("bub.txt", "mulle.txt")
+	if err != nil {
+		println(err)
+	}
 	engine := new(machine.MiniatureEngine)
 	//engine.LoadProgram(".gitignore")
 

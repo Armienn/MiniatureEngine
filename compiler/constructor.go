@@ -60,6 +60,7 @@ func (constructor *constructor) processCommand(line Line) {
 	var operation machine.Operation
 	operation.Type = line.Command
 	operation.FirstOperand, operation.SecondOperand = constructor.getValues(line)
+	constructor.operations = append(constructor.operations, operation)
 }
 
 func (constructor *constructor) getValues(line Line) (byte, byte) {

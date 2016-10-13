@@ -64,7 +64,7 @@ func parseFields(fields []string) (line Line) {
 
 	line.CommandType = parseLineType(fields[0])
 	if line.CommandType == Command {
-		parseCommand(&line, fields[1])
+		parseCommand(&line, fields[0])
 	}
 	parseOperators(&line, fields)
 	return
@@ -83,9 +83,6 @@ func parseLineType(field string) byte {
 
 func parseOperators(line *Line, fields []string) {
 	nextField := 1
-	if line.CommandType == Command {
-		nextField = 2
-	}
 	if len(fields) > nextField {
 		line.Op1 = fields[nextField]
 		nextField++

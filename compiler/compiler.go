@@ -13,16 +13,16 @@ func Compile(inputFile string, outputFile string) error {
 	}
 	defer file.Close()
 
-	lines := readAndParse(file)
-	operations := constructProgram(lines)
-	err = writeProgram(operations)
+	lines := ReadAndParse(file)
+	operations := ConstructProgram(lines)
+	err = WriteProgram(operations)
 	return err
 }
 
-func writeProgram([]machine.Operation) error {
+func ConstructProgram(lines []Line) []machine.Operation {
 	return nil
 }
 
-func constructProgram(lines []Line) []machine.Operation {
+func WriteProgram([]machine.Operation) error {
 	return nil
 }

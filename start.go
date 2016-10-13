@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	compiler.Compile(".gitignore")
+	compiler.Compile("bub.txt", "mulle.txt")
 	engine := new(machine.MiniatureEngine)
 	//engine.LoadProgram(".gitignore")
 

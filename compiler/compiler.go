@@ -15,14 +15,10 @@ func Compile(inputFile string, outputFile string) error {
 
 	lines := ReadAndParse(file)
 	operations := ConstructProgram(lines)
-	err = WriteProgram(operations)
+	err = WriteProgram(operations, outputFile)
 	return err
 }
 
-func ConstructProgram(lines []Line) []machine.Operation {
-	return nil
-}
-
-func WriteProgram([]machine.Operation) error {
+func WriteProgram(operations []machine.Operation, outputFile string) error {
 	return nil
 }

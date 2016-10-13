@@ -2,55 +2,68 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/Armienn/MiniatureEngine/compiler"
 	"github.com/Armienn/MiniatureEngine/machine"
 )
 
 func main() {
-	err := compiler.Compile("bub.txt", "mulle.txt")
-	if err != nil {
-		println(err)
-	}
-	engine := new(machine.MiniatureEngine)
-	//engine.LoadProgram(".gitignore")
-
-	program := []machine.Operation{
-		{machine.RUNE, 87, 2},
-		{machine.RUNE, 114, 2},
-		{machine.RUNE, 105, 2},
-		{machine.RUNE, 116, 2},
-		{machine.RUNE, 101, 2},
-		{machine.RUNE, 32, 2},
-		{machine.RUNE, 115, 2},
-		{machine.RUNE, 111, 2},
-		{machine.RUNE, 109, 2},
-		{machine.RUNE, 101, 2},
-		{machine.RUNE, 116, 2},
-		{machine.RUNE, 104, 2},
-		{machine.RUNE, 105, 2},
-		{machine.RUNE, 110, 2},
-		{machine.RUNE, 103, 2},
-		{machine.RUNE, 58, 2},
-		{machine.RUNE, '\n', 2},
-		{machine.GRUNE, 1, 8},
-		{machine.RUNER, 1, 8},
-		{machine.JMP, 0, 17},
-	}
-	for i, e := range program {
-		engine.Program[i] = e
-	}
-
-	for _, e := range engine.Program {
-		if e.FirstOperand == 0 &&
-			e.SecondOperand == 0 &&
-			e.Type == 0 {
-			break
+	if len(os.Args) < 2 {
+		engine := new(machine.MiniatureEngine)
+		err := engine.LoadProgram("program.bin")
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
-		fmt.Println(e)
+		engine.Run()
+		return
 	}
 
-	engine.Run()
-	//cpu := new(machine.CPU)
-	//cpu.RunProgram(program)
+	switch os.Args[1] {
+
+	case "compile":
+		if len(os.Args) == 2 {
+			err := compiler.Compile("program.txt", "program.bin")
+			if err != nil {
+				fmt.Println(err)
+			}
+			return
+		}
+		if len(os.Args) == 3 {
+			err := compiler.Compile(os.Args[2], "program.bin")
+			if err != nil {
+				fmt.Println(err)
+			}
+			return
+		}
+		err := compiler.Compile(os.Args[2], os.Args[3])
+		if err != nil {
+			fmt.Println(err)
+		}
+		return
+
+	case "run":
+		if len(os.Args) == 2 {
+			engine := new(machine.MiniatureEngine)
+			err := engine.LoadProgram("program.bin")
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			engine.Run()
+			return
+		}
+		engine := new(machine.MiniatureEngine)
+		err := engine.LoadProgram(os.Args[2])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		engine.Run()
+		return
+
+	default:
+		fmt.Println("Invalid argument")
+	}
 }

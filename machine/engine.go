@@ -20,7 +20,7 @@ func (engine *MiniatureEngine) LoadProgram(fileName string) error {
 	for i := 0; err == nil; i++ {
 		err = binary.Read(file, binary.LittleEndian, &(engine.Program[i]))
 	}
-	return err
+	return nil
 }
 
 func (engine *MiniatureEngine) Run() {
